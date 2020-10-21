@@ -1,10 +1,17 @@
-import React, { useState } from 'react'
+import React, {
+  useState,
+  useEffect
+} from 'react'
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 import {
   AppBar, Button, List, ListItem, ListItemText,
   Toolbar,
   Typography,
 } from '@material-ui/core'
+import axios from 'axios'
+
+const GET_ALL_TODOS_ENDPOINT = 'http://localhost:8080/api/v1/todos'
+const POST_TODO_ENDPOINT = 'http://localhost:8080/api/v1/todos'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -36,14 +43,13 @@ const HomeScreen: React.FC = () => {
   }
 
   const postTodo = () => {
-    setTodos([
-      ...todos,
-      {
-        id: todos.length,
-        content: content,
-        completed: false,
-      },
-    ])
+    console.log('todos.length: ' + todos.length)
+    console.log('content: ' + content)
+    const data = { id: 10, content: content, completed: false }
+    axios
+      .post(POST_TODO_ENDPOINT, data).catch(() => {
+        console.log('通信に失敗しました')
+    })
     setContent('')
   }
 
@@ -58,6 +64,18 @@ const HomeScreen: React.FC = () => {
       )
     }
   }
+
+  useEffect(() => {
+    axios
+      .get(GET_ALL_TODOS_ENDPOINT)
+      .then((results) => {
+        const data = results.data
+        console.log(data)
+        setTodos(data)
+      }).catch(() => {
+        console.log('通信に失敗しました')
+    })
+  }, [])
 
   return (
     <>
