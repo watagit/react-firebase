@@ -1,6 +1,6 @@
 import React, {
   useState,
-  // useEffect
+  useEffect
 } from 'react'
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 import {
@@ -43,15 +43,6 @@ const HomeScreen: React.FC = () => {
   }
 
   const postTodo = () => {
-    // setTodos([
-    //   ...todos,
-    //   {
-    //     id: todos.length,
-    //     content: content,
-    //     completed: false,
-    //   },
-    // ])
-    // setContent('')
     console.log('todos.length: ' + todos.length)
     console.log('content: ' + content)
     const data = { id: 10, content: content, completed: false }
@@ -74,17 +65,17 @@ const HomeScreen: React.FC = () => {
     }
   }
 
-  // useEffect(() => {
-  //   axios
-  //     .get(GET_ALL_TODOS_ENDPOINT)
-  //     .then((results) => {
-  //       const data = results.data
-  //       console.log(data)
-  //       setTodos(data)
-  //     }).catch(() => {
-  //       console.log('通信に失敗しました')
-  //   })
-  // })
+  useEffect(() => {
+    axios
+      .get(GET_ALL_TODOS_ENDPOINT)
+      .then((results) => {
+        const data = results.data
+        console.log(data)
+        setTodos(data)
+      }).catch(() => {
+        console.log('通信に失敗しました')
+    })
+  }, [])
 
   return (
     <>
