@@ -1,19 +1,31 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import {
   List,
   ListItem,
   ListItemText,
   Button
 } from '@material-ui/core'
+import { firestore } from '../plugins/firebase'
 
-const todos = [
-  { id: 1, content: "砂糖を買う", completed: false },
-  { id: 2, content: "課題を終わらせる", completed: false },
-  { id: 3, content: "歯医者に行く", completed: false },
-  { id: 4, content: "寝る", completed: true },
-]
+type TodoProps = {
+  id: string,
+  content: string,
+  completed: boolean,
+}
 
 export const TodoList: React.FC = () => {
+  const [todos, setTodos] = useState<TodoProps[]>([])
+
+  useEffect(() => {
+    firestore.collection('todos').onSnapshot((docs) => {
+      const allTodos: TodoProps[] = []
+      docs.forEach(doc => {
+        allTodos.push(doc.data() as TodoProps)
+      })
+      setTodos(allTodos)
+    })
+  }, [])
+
   const renderStateButton = (todo: any) => {
     if (todo.completed) {
       return (
@@ -41,3 +53,5 @@ export const TodoList: React.FC = () => {
     </>
   )
 }
+
+export default TodoList
