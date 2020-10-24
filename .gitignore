@@ -24,3 +24,10 @@ yarn-error.log*
 
 # idea
 .idea/*
+
+# firebase
+.firebaserc
+firebase.json
+firestore.indexes.json
+firestore.rules
+src/plugins/firebase.tsx
